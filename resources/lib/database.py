@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import xbmc
 import xbmcaddon
 import xbmcvfs
@@ -6,8 +5,8 @@ import sqlite3
 import xbmcgui
 
 # Import the common settings
-from settings import log
-from settings import os_path_join
+from resources.lib.settings import log
+from resources.lib.settings import os_path_join
 
 ADDON = xbmcaddon.Addon(id='script.pinsentry')
 
@@ -15,7 +14,7 @@ ADDON = xbmcaddon.Addon(id='script.pinsentry')
 #################################
 # Class to handle database access
 #################################
-class PinSentryDB():
+class PinSentryDB:
     def __init__(self):
         # Start by getting the database location
         self.configPath = xbmc.translatePath(ADDON.getAddonInfo('profile'))

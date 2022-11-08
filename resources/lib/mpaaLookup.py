@@ -1,18 +1,13 @@
-# -*- coding: utf-8 -*-
 import os
-import sys
-import urllib2
+from urllib import parse, request
 import traceback
 
-if sys.version_info >= (2, 7):
-    import json
-else:
-    import simplejson as json
+import json
 
-from settings import log
+from resources.lib.settings import log
 
 
-class MpaaLookup():
+class MpaaLookup:
     def __init__(self):
         self.imdb_url_prefix = 'http://www.omdbapi.com/'
         # Flag to state that there was an error contacting the site and we should
@@ -50,7 +45,7 @@ class MpaaLookup():
         if name.endswith('.mp4') or name.endswith('.mkv') or name.endswith('.avi') or name.endswith('.mov'):
             clean_name = os.path.splitext(clean_name)[0]
 
-        clean_name = urllib2.quote(clean_name)
+        clean_name = parse.quote(clean_name)
         query = '?apikey=49d311ec&t=%s' % clean_name
 
         if year not in [None, '', '0']:
@@ -88,9 +83,9 @@ class MpaaLookup():
         log("MpaaLookup: Making query using %s" % url)
         resp_details = None
         try:
-            req = urllib2.Request(url)
+            req = request.Request(url)
             req.add_header('Accept', 'application/json')
-            response = urllib2.urlopen(req, timeout=2)
+            response = request.urlopen(req, timeout=2)
             resp_details = response.read()
             try:
                 response.close()

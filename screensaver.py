@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import xbmcgui
 
 # Import the common settings

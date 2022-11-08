@@ -1,17 +1,12 @@
-# -*- coding: utf-8 -*-
 import sys
 import os
-import urllib
-import urlparse
+from urllib import parse
 import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
 
-if sys.version_info < (2, 7):
-    import simplejson
-else:
-    import json as simplejson
+import json as simplejson
 
 # Import the common settings
 from resources.lib.settings import Settings
@@ -22,8 +17,8 @@ from resources.lib.database import PinSentryDB
 ADDON = xbmcaddon.Addon(id='script.pinsentry')
 ICON = ADDON.getAddonInfo('icon')
 FANART = ADDON.getAddonInfo('fanart')
-CWD = ADDON.getAddonInfo('path').decode("utf-8")
-ICON_DIR = xbmc.translatePath(os.path.join(CWD, 'resources', 'media', 'classifications').encode("utf-8")).decode("utf-8")
+CWD = ADDON.getAddonInfo('path')
+ICON_DIR = xbmc.translatePath(os.path.join(CWD, 'resources', 'media', 'classifications'))
 
 
 ###################################################################
@@ -49,80 +44,80 @@ class MenuNavigator():
 
     # Creates a URL for a directory
     def _build_url(self, query):
-        return self.base_url + '?' + urllib.urlencode(query)
+        return self.base_url + '?' + parse.urlencode(query)
 
     # Display the default list of items in the root menu
     def showRootMenu(self):
         # Movies
         url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.MOVIES})
-        li = xbmcgui.ListItem(ADDON.getLocalizedString(32201), iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(ADDON.getLocalizedString(32201))
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems(self._getContextMenu(MenuNavigator.MOVIES), replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # TV Shows
         url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.TVSHOWS})
-        li = xbmcgui.ListItem(ADDON.getLocalizedString(32202), iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(ADDON.getLocalizedString(32202))
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems(self._getContextMenu(MenuNavigator.TVSHOWS), replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Movie Sets
         url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.MOVIESETS})
-        li = xbmcgui.ListItem(ADDON.getLocalizedString(32203), iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(ADDON.getLocalizedString(32203))
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems(self._getContextMenu(MenuNavigator.MOVIESETS), replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Music Videos
         url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.MUSICVIDEOS})
-        li = xbmcgui.ListItem(ADDON.getLocalizedString(32205), iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(ADDON.getLocalizedString(32205))
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems(self._getContextMenu(MenuNavigator.MUSICVIDEOS), replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Plugins
         if Settings.isActivePlugins():
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.PLUGINS})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32128), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32128))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Files
         if Settings.isActiveFileSource():
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.FILESOURCE})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32204), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32204))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Classifications
         url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.CLASSIFICATIONS})
-        li = xbmcgui.ListItem(ADDON.getLocalizedString(32206), iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(ADDON.getLocalizedString(32206))
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems([], replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Repositories
         if Settings.isActiveRepositories():
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.REPOSITORIES})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32214), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32214))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Live TV Channels
         if Settings.isActiveTvChannels():
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.TVCHANNELS})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32215), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32215))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
         # Add a blank line before the Operations
-        li = xbmcgui.ListItem("", iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem("")
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems([], replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url="", listitem=li, isFolder=False)
 
@@ -133,8 +128,8 @@ class MenuNavigator():
             menuItemName = "[%s]" % menuItemName
         except:
             pass
-        li = xbmcgui.ListItem(menuItemName, iconImage=ICON)
-        li.setProperty("Fanart_Image", FANART)
+        li = xbmcgui.ListItem(menuItemName)
+        li.setArt({"icon": ICON, "fanart": FANART})
         li.addContextMenuItems([], replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
@@ -186,21 +181,22 @@ class MenuNavigator():
 
         for item in items:
             # Create the list-item for this video
-            li = xbmcgui.ListItem(item['title'], iconImage=item['thumbnail'])
+            li = xbmcgui.ListItem(item['title'])
+            li.setArt({"icon": item['thumbnail']})
 
             # Remove the default context menu
             li.addContextMenuItems([], replaceItems=True)
             # Get the title of the video
             title = item['title']
             try:
-                title = item['title'].encode("utf-8")
+                title = item['title']
             except:
                 pass
 
             # Make sure the dbid is coded correctly
             dbid = item['dbid']
             try:
-                dbid = item['dbid'].encode("utf-8")
+                dbid = item['dbid']
             except:
                 pass
 
@@ -266,8 +262,7 @@ class MenuNavigator():
             dbid = 'musicvideoid'
             extraDetails = ""
 
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.%s", "params": {"properties": ["title", "thumbnail", "fanart"%s], "sort": { "method": "title" } }, "id": 1}' % (jsonGet, extraDetails))
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_query = xbmc.executeJSONRPC('{{"jsonrpc": "2.0", "method": "VideoLibrary.{}", "params": {{"properties": ["title", "thumbnail", "fanart"{}], "sort": {{ "method": "title" }} }}, "id": 1}}'.format(jsonGet, extraDetails))
         json_response = simplejson.loads(json_query)
         log(json_response)
         videolist = []
@@ -276,7 +271,7 @@ class MenuNavigator():
                 videoItem = {}
 
                 try:
-                    videoItem['title'] = item['title'].encode("utf-8")
+                    videoItem['title'] = item['title']
                 except:
                     log("setVideoList: Failed to encode title %s" % item['title'])
                     videoItem['title'] = item['title']
@@ -364,24 +359,15 @@ class MenuNavigator():
                     cert = item['mpaa'].strip().split(':')[-1]
                     cert = cert.strip().split()[-1]
 
-                    try:
-                        cert = cert.encode("utf-8")
-                    except:
-                        log("PinSentryPlugin: Failed to encode certificate")
-
                     # Need to decode the title as it doesn't link it for the logging that follows
                     # if we don't
                     title = item['title']
-                    try:
-                        title = item['title'].decode("utf-8")
-                    except:
-                        log("PinSentryPlugin: Failed to decode title")
 
                     if cert in certValues:
                         item['mpaa'] = cert
-                        log("PinSentryPlugin: Setting mpaa for %s to %s" % (title, cert))
+                        log("PinSentryPlugin: Setting mpaa for {} to {}".format(title, cert))
                     else:
-                        log("PinSentryPlugin: Clearing mpaa for %s (was %s)" % (title, item['mpaa']))
+                        log("PinSentryPlugin: Clearing mpaa for {} (was {})".format(title, item['mpaa']))
                         item['mpaa'] = ""
         return items
 
@@ -389,7 +375,6 @@ class MenuNavigator():
     def _setPluginList(self):
         # Make the call to find out all the addons that are installed
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": { "type": "xbmc.python.pluginsource", "enabled": true, "properties": ["name", "thumbnail", "fanart"] }, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         plugins = []
@@ -423,7 +408,6 @@ class MenuNavigator():
     def _setRepositoryList(self):
         # Make the call to find out all the addons that are installed
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": { "type": "xbmc.addon.repository", "properties": ["name", "thumbnail", "fanart"] }, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         repos = []
@@ -453,14 +437,14 @@ class MenuNavigator():
     def _setTvChannelGroupList(self):
         # Make the call to find out all the addons that are installed
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannelGroups", "params": { "channeltype": "tv" }, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         if ("result" in json_response) and ('channelgroups' in json_response['result']):
             # Check each of the channel groups that are installed on the system
             for pvrItem in json_response['result']['channelgroups']:
                 # Create the list-item for this channel group
-                li = xbmcgui.ListItem(pvrItem['label'], iconImage='DefaultAddonPVRClient.png')
+                li = xbmcgui.ListItem(pvrItem['label'])
+                li.setArt({"icon": "DefaultAddonPVRClient.png"})
 
                 # Remove the default context menu
                 li.addContextMenuItems([], replaceItems=True)
@@ -475,7 +459,6 @@ class MenuNavigator():
     def _setTvChannelList(self, groupId):
         # Make the call to find out all the addons that are installed
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannels", "params": { "channelgroupid": %s, "properties": ["hidden", "thumbnail"]  }, "id": 1}' % groupId)
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         channels = []
@@ -495,10 +478,6 @@ class MenuNavigator():
 
                 # Get the name of the channel
                 channelName = pvrItem['label']
-                try:
-                    channelName = pvrItem['label'].encode("utf-8")
-                except:
-                    pass
 
                 iconImage = 'DefaultAddonPVRClient.png'
                 if pvrItem['thumbnail'] not in [None, ""]:
@@ -509,7 +488,8 @@ class MenuNavigator():
                 if channelName in securityDetails:
                     securityLevel = securityDetails[channelName]
 
-                li = xbmcgui.ListItem(pvrItem['label'], iconImage=iconImage)
+                li = xbmcgui.ListItem(pvrItem['label'])
+                li.setArt({"icon": iconImage})
 
                 # Add a tick if security is set
                 if securityLevel > 0:
@@ -529,7 +509,6 @@ class MenuNavigator():
     def _setFileSourceList(self):
         # Make the call to find out all the addons that are installed
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Files.GetSources", "params": { "media": "video" }, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         fileSources = []
@@ -565,14 +544,14 @@ class MenuNavigator():
         # Check if we are showing the root classification listing
         if type in [None, ""]:
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.CLASSIFICATIONS, 'type': MenuNavigator.CLASSIFICATIONS_MOVIES})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32207), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32207))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.CLASSIFICATIONS, 'type': MenuNavigator.CLASSIFICATIONS_TV})
-            li = xbmcgui.ListItem(ADDON.getLocalizedString(32208), iconImage=ICON)
-            li.setProperty("Fanart_Image", FANART)
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32208))
+            li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
         elif subtype in [None, ""]:
@@ -598,8 +577,8 @@ class MenuNavigator():
                     if flag['lang'] == lang:
                         iconImage = os_path_join(ICON_DIR, flag['icon'])
 
-                li = xbmcgui.ListItem(ADDON.getLocalizedString(lang), iconImage=iconImage)
-                li.setProperty("Fanart_Image", FANART)
+                li = xbmcgui.ListItem(ADDON.getLocalizedString(lang))
+                li.setArt({"icon": iconImage, "fanart": FANART})
                 li.addContextMenuItems([], replaceItems=True)
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
         else:
@@ -620,7 +599,8 @@ class MenuNavigator():
                 if classification['icon'] not in [None, ""]:
                     iconImage = os_path_join(ICON_DIR, classification['icon'])
 
-                li = xbmcgui.ListItem(fullName, iconImage=iconImage)
+                li = xbmcgui.ListItem(fullName)
+                li.setArt({"icon": iconImage})
 
                 # Add a tick if security is set
                 if securityLevel > 0:
@@ -635,7 +615,7 @@ class MenuNavigator():
 
     # Set the security value for a given video
     def setSecurity(self, type, title, id, oldLevel, classBlocked=False, forceLevel=None):
-        log("Setting security for (id:%s) %s" % (id, title))
+        log("Setting security for (id:{}) {}".format(id, title))
 
         level = 1
 
@@ -652,16 +632,16 @@ class MenuNavigator():
                 displayNameList = []
                 
                 # Add the option to allow item always
-                displayNameList.append("%s %s" % (ADDON.getLocalizedString(32211), "-1"))
+                displayNameList.append("{} {}".format(ADDON.getLocalizedString(32211), "-1"))
 
                 # Add the option to turn it off
-                displayNameList.append("%s %s" % (ADDON.getLocalizedString(32211), ADDON.getLocalizedString(32013)))
+                displayNameList.append("{} {}".format(ADDON.getLocalizedString(32211), ADDON.getLocalizedString(32013)))
                 for i in range(1, numLevels + 1):
                     secLevStr = str(i)
                     if numLevels < 2:
                         # If there is only one security level, use "On" rather than the number
                         secLevStr = ADDON.getLocalizedString(32014)
-                    displayString = "%s %s" % (ADDON.getLocalizedString(32211), secLevStr)
+                    displayString = "{} {}".format(ADDON.getLocalizedString(32211), secLevStr)
                     displayNameList.append(displayString)
 
                 # Check if we need the option to disable a classification restriction
@@ -726,7 +706,6 @@ class MenuNavigator():
         log("Setting security for movies in movie set %d" % setid)
         # Get all the movies in the movie set
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": { "setid": %d, "properties": ["title"] }, "id": 1}' % setid)
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
         log(json_response)
         if ("result" in json_response) and ('setdetails' in json_response['result']):
@@ -742,10 +721,6 @@ class MenuNavigator():
         for item in items:
             # Get the title of the video
             title = item['title']
-            try:
-                title = item['title'].encode("utf-8")
-            except:
-                log("PinSentryPlugin: setBulkSecurity Failed to encode title %s" % title)
             self.setSecurity(type, title, item['dbid'], level, forceLevel=level)
 
     # Construct the context menu
@@ -776,7 +751,7 @@ if __name__ == '__main__':
     # Get all the arguments
     base_url = sys.argv[0]
     addon_handle = int(sys.argv[1])
-    args = urlparse.parse_qs(sys.argv[2][1:])
+    args = parse.parse_qs(sys.argv[2][1:])
 
     # Record what the plugin deals with, files in our case
     xbmcplugin.setContent(addon_handle, 'files')

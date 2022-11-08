@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 import xbmcaddon
 import xbmcgui
 
 # Import the common settings
-from settings import log
-from settings import Settings
+from resources.lib.settings import log
+from resources.lib.settings import Settings
 
 ADDON = xbmcaddon.Addon(id='script.pinsentry')
-CWD = ADDON.getAddonInfo('path').decode("utf-8")
+CWD = ADDON.getAddonInfo('path')
 
 
 # Class that uses the default Number keyboard and overwrites it's behaviour
@@ -57,7 +56,7 @@ class NumberPad(xbmcgui.WindowXMLDialog):
 
         # Set the title of the dialog
         try:
-            self.getControl(1).setLabel(ADDON.getLocalizedString(self.titleLangId).encode('utf-8'))
+            self.getControl(1).setLabel(ADDON.getLocalizedString(self.titleLangId))
         except:
             log("NumberPad: Failed to set title")
 

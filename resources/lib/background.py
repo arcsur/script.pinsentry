@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 import xbmcaddon
 import xbmcgui
 
 # Import the common settings
-from settings import log
-from settings import Settings
+from resources.lib.settings import log
+from resources.lib.settings import Settings
 
 ADDON = xbmcaddon.Addon(id='script.pinsentry')
-CWD = ADDON.getAddonInfo('path').decode("utf-8")
+CWD = ADDON.getAddonInfo('path')
 
 
 # Class to set the background while a pin is prompted for

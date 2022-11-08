@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 import hashlib
 import time
@@ -13,10 +12,8 @@ ADDON_ID = ADDON.getAddonInfo('id')
 # Common logging module
 def log(txt, loglevel=xbmc.LOGDEBUG):
     if (ADDON.getSetting("logEnabled") == "true") or (loglevel != xbmc.LOGDEBUG):
-        if isinstance(txt, str):
-            txt = txt.decode("utf-8")
         message = u'%s: %s' % (ADDON_ID, txt)
-        xbmc.log(msg=message.encode("utf-8"), level=loglevel)
+        xbmc.log(msg=message, level=loglevel)
 
 
 # There has been problems with calling join with non ascii characters,
@@ -24,21 +21,13 @@ def log(txt, loglevel=xbmc.LOGDEBUG):
 def os_path_join(dir, file):
     # Convert each argument - if an error, then it will use the default value
     # that was passed in
-    try:
-        dir = dir.decode("utf-8")
-    except:
-        pass
-    try:
-        file = file.decode("utf-8")
-    except:
-        pass
     return os.path.join(dir, file)
 
 
 ##############################
 # Stores Various Settings
 ##############################
-class Settings():
+class Settings:
     INVALID_PIN_NOTIFICATION_POPUP = 0
     INVALID_PIN_NOTIFICATION_DIALOG = 1
     INVALID_PIN_NOTIFICATION_NONE = 2
@@ -372,8 +361,8 @@ class Settings():
             Settings.setUserPinValue("", "unrestrictedUserPin")
 
     @staticmethod
-    def encryptPin(rawValue):
-        return hashlib.sha256(rawValue).hexdigest()
+    def encryptPin(pin):
+        return hashlib.sha256(pin.encode("utf-8")).hexdigest()
 
     @staticmethod
     def isPinSet(pinLevel=1):
