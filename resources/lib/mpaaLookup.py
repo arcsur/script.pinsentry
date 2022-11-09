@@ -38,7 +38,7 @@ class MpaaLookup:
 
     # Get the MPAA from imdb
     def getIMDB_mpaa_by_name(self, name, year='', isTvShow=True):
-        log("IdLookup: Getting IMDB Mpaa by name %s, year=%s, tv=%s" % (name, year, str(isTvShow)))
+        log("IdLookup: Getting IMDB Mpaa by name {}, year={}, tv={}".format(name, year, str(isTvShow)))
 
         clean_name = name
         # If we have been passed a file name remove the file type
@@ -49,14 +49,14 @@ class MpaaLookup:
         query = '?apikey=49d311ec&t=%s' % clean_name
 
         if year not in [None, '', '0']:
-            query = '%s&y=%s' % (query, str(year))
+            query = '{}&y={}'.format(query, str(year))
 
         if isTvShow:
             query = '%s&type=series' % query
         else:
             query = '%s&type=movie' % query
 
-        url = "%s%s" % (self.imdb_url_prefix, query)
+        url = "{}{}".format(self.imdb_url_prefix, query)
 
         log("MpaaLookup: Using call: %s" % url)
         json_details = self._makeCall(url)
@@ -94,6 +94,6 @@ class MpaaLookup:
                 pass
         except:
             self.stopTrying = True
-            log("MpaaLookup: Failed to retrieve details from %s: %s" % (url, traceback.format_exc()))
+            log("MpaaLookup: Failed to retrieve details from {}: {}".format(url, traceback.format_exc()))
 
         return resp_details

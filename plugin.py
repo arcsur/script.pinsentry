@@ -262,7 +262,7 @@ class MenuNavigator():
             dbid = 'musicvideoid'
             extraDetails = ""
 
-        json_query = xbmc.executeJSONRPC('{{"jsonrpc": "2.0", "method": "VideoLibrary.{}", "params": {{"properties": ["title", "thumbnail", "fanart"{}], "sort": {{ "method": "title" }} }}, "id": 1}}'.format(jsonGet, extraDetails))
+        json_query = xbmc.executeJSONRPC(f'{{"jsonrpc": "2.0", "method": "VideoLibrary.{jsonGet}", "params": {{"properties": ["title", "thumbnail", "fanart"{extraDetails}], "sort": {{ "method": "title" }} }}, "id": 1}}')
         json_response = simplejson.loads(json_query)
         log(json_response)
         videolist = []
@@ -365,7 +365,7 @@ class MenuNavigator():
 
                     if cert in certValues:
                         item['mpaa'] = cert
-                        log("PinSentryPlugin: Setting mpaa for {} to {}".format(title, cert))
+                        log(f"PinSentryPlugin: Setting mpaa for {title} to {cert}")
                     else:
                         log("PinSentryPlugin: Clearing mpaa for {} (was {})".format(title, item['mpaa']))
                         item['mpaa'] = ""
@@ -615,7 +615,7 @@ class MenuNavigator():
 
     # Set the security value for a given video
     def setSecurity(self, type, title, id, oldLevel, classBlocked=False, forceLevel=None):
-        log("Setting security for (id:{}) {}".format(id, title))
+        log(f"Setting security for (id:{id}) {title}")
 
         level = 1
 
@@ -635,13 +635,13 @@ class MenuNavigator():
                 displayNameList.append("{} {}".format(ADDON.getLocalizedString(32211), "-1"))
 
                 # Add the option to turn it off
-                displayNameList.append("{} {}".format(ADDON.getLocalizedString(32211), ADDON.getLocalizedString(32013)))
+                displayNameList.append(f"{ADDON.getLocalizedString(32211)} {ADDON.getLocalizedString(32013)}")
                 for i in range(1, numLevels + 1):
                     secLevStr = str(i)
                     if numLevels < 2:
                         # If there is only one security level, use "On" rather than the number
                         secLevStr = ADDON.getLocalizedString(32014)
-                    displayString = "{} {}".format(ADDON.getLocalizedString(32211), secLevStr)
+                    displayString = f"{ADDON.getLocalizedString(32211)} {secLevStr}"
                     displayNameList.append(displayString)
 
                 # Check if we need the option to disable a classification restriction

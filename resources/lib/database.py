@@ -25,7 +25,7 @@ class PinSentryDB:
 
     # Removes the database if it exists
     def cleanDatabase(self):
-        msg = "%s%s" % (ADDON.getLocalizedString(32113), "?")
+        msg = "{}{}".format(ADDON.getLocalizedString(32113), "?")
         isYes = xbmcgui.Dialog().yesno(ADDON.getLocalizedString(32001), msg)
         if isYes:
             # If the database file exists, delete it
@@ -280,7 +280,7 @@ class PinSentryDB:
 
     # Delete an entry from the database
     def _deleteSecurityDetails(self, tableName, name):
-        log("PinSentryDB: delete %s for %s" % (tableName, name))
+        log("PinSentryDB: delete {} for {}".format(tableName, name))
 
         # Get a connection to the DB
         conn = self.getConnection()
@@ -340,13 +340,13 @@ class PinSentryDB:
 
     # Select the security entry from the database
     def _getSecurityLevel(self, tableName, name, dbField='name'):
-        log("PinSentryDB: select %s for %s (dbField=%s)" % (tableName, name, dbField))
+        log("PinSentryDB: select {} for {} (dbField={})".format(tableName, name, dbField))
 
         # Get a connection to the DB
         conn = self.getConnection()
         c = conn.cursor()
         # Select any existing data from the database
-        cmd = 'SELECT * FROM %s where %s = ?' % (tableName, dbField)
+        cmd = 'SELECT * FROM {} where {} = ?'.format(tableName, dbField)
         c.execute(cmd, (name,))
         row = c.fetchone()
 

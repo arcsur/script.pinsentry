@@ -12,7 +12,7 @@ ADDON_ID = ADDON.getAddonInfo('id')
 # Common logging module
 def log(txt, loglevel=xbmc.LOGDEBUG):
     if (ADDON.getSetting("logEnabled") == "true") or (loglevel != xbmc.LOGDEBUG):
-        message = u'%s: %s' % (ADDON_ID, txt)
+        message = '{}: {}'.format(ADDON_ID, txt)
         xbmc.log(msg=message, level=loglevel)
 
 
