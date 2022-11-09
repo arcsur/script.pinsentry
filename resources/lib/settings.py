@@ -264,7 +264,15 @@ class Settings:
                              {'id': 64, 'name': '%s - T', 'lang': 32320, 'match': 'T', 'icon': 'Portugal/Portugal-TV-T.png'},
                              {'id': 65, 'name': '%s - 10', 'lang': 32320, 'match': '10', 'icon': 'Portugal/Portugal-TV-10.png'},
                              {'id': 66, 'name': '%s - 12', 'lang': 32320, 'match': '12', 'icon': 'Portugal/Portugal-TV-12.png'},
-                             {'id': 67, 'name': '%s - 16', 'lang': 32320, 'match': '16', 'icon': 'Portugal/Portugal-TV-16.png'}]
+                             {'id': 67, 'name': '%s - 16', 'lang': 32320, 'match': '16', 'icon': 'Portugal/Portugal-TV-16.png'},
+                             {'id': 68, 'name': '%s - U', 'lang': 32301, 'match': 'U', 'icon': 'UK/UK-U.png'},  # UK
+                             {'id': 69, 'name': '%s - PG', 'lang': 32301, 'match': 'PG', 'icon': 'UK/UK-PG.png'},
+                             {'id': 70, 'name': '%s - 12A', 'lang': 32301, 'match': '12A', 'icon': 'UK/UK-12A.png'},
+                             {'id': 71, 'name': '%s - 12', 'lang': 32301, 'match': '12', 'icon': 'UK/UK-12.png'},
+                             {'id': 72, 'name': '%s - 15', 'lang': 32301, 'match': '15', 'icon': 'UK/UK-15.png'},
+                             {'id': 73, 'name': '%s - 18', 'lang': 32301, 'match': '18', 'icon': 'UK/UK-18.png'},
+                             {'id': 74, 'name': '%s - R18', 'lang': 32301, 'match': 'R18', 'icon': 'UK/UK-R18.png'},
+                             ]
 
     @staticmethod
     def reloadSettings():
