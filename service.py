@@ -64,7 +64,7 @@ class PinSentry():
 
     @staticmethod
     def promptUserForPin(requiredLevel=1, showBackgroundLonger = False):
-        userHasAccess = True
+        userHasAccess = False
 
         # Set the background
         background = Background.createBackground()
@@ -365,6 +365,7 @@ class PinSentryPlayer(xbmc.Player):
 
             log("PinSentryPlayer: Paused video to check if OK to play")
 
+        xbmc.sleep(250)  # Some addons close all dialogs at start of playback
         # Prompt the user for the pin, returns True if they knew it
         if PinSentry.promptUserForPin(securityLevel, True):
             log("PinSentryPlayer: Resuming video")
