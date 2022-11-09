@@ -17,7 +17,7 @@ ADDON = xbmcaddon.Addon(id='script.pinsentry')
 class PinSentryDB:
     def __init__(self):
         # Start by getting the database location
-        self.configPath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
+        self.configPath = xbmcvfs.translatePath(ADDON.getAddonInfo('profile'))
         self.databasefile = os_path_join(self.configPath, "pinsentry_database.db")
         log("PinSentryDB: Database file location = %s" % self.databasefile)
         # Check to make sure the DB has been created

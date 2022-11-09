@@ -8,6 +8,8 @@ import xbmcaddon
 
 import json as simplejson
 
+import xbmcvfs
+
 # Import the common settings
 from resources.lib.settings import Settings
 from resources.lib.settings import log
@@ -17,14 +19,13 @@ from resources.lib.database import PinSentryDB
 ADDON = xbmcaddon.Addon(id='script.pinsentry')
 ICON = ADDON.getAddonInfo('icon')
 FANART = ADDON.getAddonInfo('fanart')
-CWD = ADDON.getAddonInfo('path')
-ICON_DIR = xbmc.translatePath(os.path.join(CWD, 'resources', 'media', 'classifications'))
+ICON_DIR = xbmcvfs.translatePath(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'media', 'classifications'))
 
 
 ###################################################################
 # Class to handle the navigation information for the plugin
 ###################################################################
-class MenuNavigator():
+class MenuNavigator:
     MOVIES = 'movies'
     TVSHOWS = 'tvshows'
     MOVIESETS = 'sets'
@@ -133,7 +134,7 @@ class MenuNavigator():
         li.addContextMenuItems([], replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
-        xbmcplugin.endOfDirectory(self.addon_handle)
+        xbmcplugin.endOfDirectory(self.addon_handle, cacheToDisc=False)
 
     # Show the list of videos in a given set
     def showFolder(self, foldername, type="", subType=""):
@@ -243,7 +244,7 @@ class MenuNavigator():
             url = self._build_url({'mode': 'setsecurity', 'level': item['securityLevel'], 'type': target, 'title': title, 'id': dbid, 'classificationBlocked': str(isBlockedByClassification)})
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
-        xbmcplugin.endOfDirectory(self.addon_handle)
+        xbmcplugin.endOfDirectory(self.addon_handle, cacheToDisc=False)
 
     # Do a lookup in the database for the given type of videos
     def _getVideos(self, target):
@@ -449,7 +450,7 @@ class MenuNavigator():
                 url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.TVCHANNELS, 'type': 'group', 'subtype': pvrItem['channelgroupid']})
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
-        xbmcplugin.endOfDirectory(self.addon_handle)
+        xbmcplugin.endOfDirectory(self.addon_handle, cacheToDisc=False)
 
     # Get the list of live TV Channels on the system
     def _setTvChannelList(self, groupId):
@@ -498,7 +499,7 @@ class MenuNavigator():
                 url = self._build_url({'mode': 'setsecurity', 'type': MenuNavigator.TVCHANNELS, 'id': channelId, 'title': channelName, 'level': securityLevel})
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
-        xbmcplugin.endOfDirectory(self.addon_handle)
+        xbmcplugin.endOfDirectory(self.addon_handle, cacheToDisc=False)
         return channels
 
     # get the list of plugins installed on the system
@@ -607,7 +608,7 @@ class MenuNavigator():
                 url = self._build_url({'mode': 'setsecurity', 'type': type, 'id': classification['id'], 'title': classification['match'], 'level': securityLevel})
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
-        xbmcplugin.endOfDirectory(self.addon_handle)
+        xbmcplugin.endOfDirectory(self.addon_handle, cacheToDisc=False)
 
     # Set the security value for a given video
     def setSecurity(self, type, title, id, oldLevel, classBlocked=False, forceLevel=None):
@@ -650,17 +651,14 @@ class MenuNavigator():
                     level = select - 1 # because first element is now -1 (because of to allow item always)
                     if classBlocked and (select >= (len(displayNameList) - 1)):
                         level = -1
-                    log("Setting security level to %d" % level)
+                    log(f"Setting security level to {level}")
                 else:
                     log("Exiting set security as no level selected")
                     return
         else:
             level = forceLevel
 
-        # This could take a little time to set the value so show the busy dialog
-        xbmc.executebuiltin("ActivateWindow(busydialog)")
-
-        if title not in [None, ""]:
+        if title:
             pinDB = PinSentryDB()
             if type == MenuNavigator.TVSHOWS:
                 # Set the security level for this title, setting it to zero
@@ -693,13 +691,11 @@ class MenuNavigator():
             # Handle the bulk operations like set All security for the movies
             self._setBulkSecurity(type, level)
 
-        xbmc.executebuiltin("Dialog.Close(busydialog)")
-        # longer lists always start from the beginning. crude workaround:
-        #xbmc.executebuiltin("Container.Refresh")
+        xbmc.executebuiltin("Container.Refresh")
 
     # Sets the security details on all the Movies in a given Movie Set
     def _setSecurityOnMoviesInMovieSets(self, setid, level):
-        log("Setting security for movies in movie set %d" % setid)
+        log(f"Setting security for movies in movie set {setid}")
         # Get all the movies in the movie set
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovieSetDetails", "params": { "setid": %d, "properties": ["title"] }, "id": 1}' % setid)
         json_response = simplejson.loads(json_query)
