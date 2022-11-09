@@ -125,7 +125,7 @@ class MenuNavigator():
         url = self._build_url({'mode': 'forcepin', 'foldername': 'none'})
         menuItemName = ADDON.getLocalizedString(32213)
         try:
-            menuItemName = "[%s]" % menuItemName
+            menuItemName = f"[{menuItemName}]"
         except:
             pass
         li = xbmcgui.ListItem(menuItemName)
@@ -204,7 +204,7 @@ class MenuNavigator():
             # Check if the classification is restricting this item
             isBlockedByClassification = False
             if 'mpaa' in item:
-                if item['mpaa'] not in [None, ""]:
+                if item['mpaa']:
                     prefix += 'bC '
                     isBlockedByClassification = True
 
@@ -355,19 +355,15 @@ class MenuNavigator():
         # Check each of the items and add a flag if they are protected by a classification rule
         for item in items:
             if 'mpaa' in item:
-                if item['mpaa'] not in [None, ""]:
+                if item['mpaa']:
                     cert = item['mpaa'].strip().split(':')[-1]
                     cert = cert.strip().split()[-1]
-
-                    # Need to decode the title as it doesn't link it for the logging that follows
-                    # if we don't
-                    title = item['title']
 
                     if cert in certValues:
                         item['mpaa'] = cert
                         log(f"PinSentryPlugin: Setting mpaa for {title} to {cert}")
                     else:
-                        log("PinSentryPlugin: Clearing mpaa for {} (was {})".format(title, item['mpaa']))
+                        log(f"PinSentryPlugin: Clearing mpaa for {item['title']} (was {item['mpaa']})")
                         item['mpaa'] = ""
         return items
 
@@ -542,7 +538,7 @@ class MenuNavigator():
         del pinDB
 
         # Check if we are showing the root classification listing
-        if type in [None, ""]:
+        if not type:
             url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.CLASSIFICATIONS, 'type': MenuNavigator.CLASSIFICATIONS_MOVIES})
             li = xbmcgui.ListItem(ADDON.getLocalizedString(32207))
             li.setArt({"icon": ICON, "fanart": FANART})
@@ -554,7 +550,7 @@ class MenuNavigator():
             li.setArt({"icon": ICON, "fanart": FANART})
             li.addContextMenuItems([], replaceItems=True)
             xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
-        elif subtype in [None, ""]:
+        elif not subtype:
             # Get all the different language that are supported
             languages = []
             for classification in classifications:
