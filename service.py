@@ -147,7 +147,7 @@ class PinSentryPlayer(xbmc.Player):
     def __init__(self, *args, **kwargs):
         xbmc.Player.__init__(self)
 
-    def onPlayBackStarted(self):
+    def onAVStarted(self):
         if not (Settings.isActiveVideoPlaying() or Settings.isActiveTvChannels()):
             return
 
